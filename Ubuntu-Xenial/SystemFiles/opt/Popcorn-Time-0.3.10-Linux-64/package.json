@@ -42,7 +42,7 @@
         "popcorn-txt-api": "git+https://github.com/hackhackhack/popcorn-txt-api",
         "butter-provider-vodo": "git+https://github.com/butterproviders/butter-provider-vodo",
         "popcorn-txt-api": "git+https://github.com/hackhackhack/popcorn-txt-api",
-        "adm-zip": "0.4.7",
+        "adm-zip": "0.4.14",
         "dlnacasts": "0.1.0",
         "airplayer": "2.0.0",
         "async": "2.1.2",
