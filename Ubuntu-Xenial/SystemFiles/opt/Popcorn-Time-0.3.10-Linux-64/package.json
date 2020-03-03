@@ -74,7 +74,7 @@
         "sanitizer": "0.x.x",
         "semver": "5.x.x",
         "send": "0.14.x",
-        "tar": "2.2.1",
+        "tar": "6.0.1",
         "temp": "0.x.x",
         "torrent-tracker-health": "1.x.x",
         "trakt.tv": "1.x.x",
