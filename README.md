@@ -1,2 +1,2 @@
-# HP_ENVY_15-as100-setup
-This is a repo to help me with installing Linux Distros to my HP ENVY 15-as100 Notebook
+# HP Probook 450 G8 Setup
+Repository for setting up a Linux Distro on my HP Probook G8 notebook.
