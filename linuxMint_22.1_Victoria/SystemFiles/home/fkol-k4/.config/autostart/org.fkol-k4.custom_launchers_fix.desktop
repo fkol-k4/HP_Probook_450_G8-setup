@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=My Launchers Fix
+GenericName=Custom Launchers Fixing Tool
+Icon=usr/share/icons/fkol-k4/Antu_Launcher.svg
+Exec=/usr/local/bin/fkol-k4.custom_launchers_fix
+NoDisplay=false
+Categories=DesktopSettings;FileTools;Utility;
+StartupNotify=false
+Terminal=false

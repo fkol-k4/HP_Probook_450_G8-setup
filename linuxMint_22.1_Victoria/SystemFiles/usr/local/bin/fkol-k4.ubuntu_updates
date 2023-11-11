@@ -1,0 +1,83 @@
+#!/bin/bash
+
+#   File: $HOME/.local/bin/fkol-k4_ubuntu-updates
+#   Type: bash script
+
+#   Update packages in a .deb-based Linux system.
+#   Copyright (C) 2015 fkol-k4 fkolyvas@gmail.com
+
+#   This program is free software; you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation version 2 of the License.
+
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+
+#   You should have received a copy of the GNU General Public License along
+#   with this program; if not, write to the Free Software Foundation, Inc.,
+#   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+#   CLEAR CONSOLE
+#   =============
+clear
+
+#   PACKAGE UPDATES
+#   ===============
+#   Package updates
+sudo apt-get --quiet update
+sudo apt-get --yes dist-upgrade
+sync; sleep 1; sync
+
+#   Apt cleaning
+sudo apt-get --yes clean
+sudo apt-get --yes autoclean
+sudo apt-get --yes autoremove
+sync; sleep 1; sync
+
+#   Fix possible dependency or breakage problems
+sudo apt-get --yes --fix-missing install
+sudo apt-get --yes --fix-broken install
+sudo dpkg --configure -a
+sync; sleep 1; sync
+
+#   Update databases
+sudo apt-file update
+sudo updatedb
+
+#   Update GRUB2 configuration
+#   sudo grub-mkconfig -o /boot/grub/grub.cfg
+# 	Install GRUB to $GRUB_TARGET
+#   sudo grub-install $GRUB_TARGET
+# 	Sync disk I/O
+sync; sleep 1; sync
+
+#   USER NOTIFICATION && UPDATES SCRIPT EXIT
+#   Notify $USER on terminal
+echo "    Updates script completed."
+echo "    ─────────────────────────"
+echo
+echo "    The terminal window will remain open for updates inspection.
+    Press any key to continue..."
+#   Notify $USER via notification (if possible)
+if [[ `which notify-send` ]]; then
+	# 	set icon for notifications
+	app_icon="/usr/share/icons/fkol-k4/fkol-k4.donkey.svg"
+    if [ -f $app_icon ]; then
+        notify-send -i $app_icon -t 7000  "Updates completed. Check your terminal"
+    else
+        notify-send -t 3500  "Updates completed. Check your terminal"
+    fi
+fi
+# 	Wait for $USER input
+read -s -n 1 key
+# 	Message && exit
+clear
+echo "
+
+The terminal window will close in four (4) seconds."
+echo "
+    See you next time" $USER
+sleep 4
+exit

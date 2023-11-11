@@ -1,0 +1,133 @@
+#!/bin/bash
+
+#   file: fkol-k4.10.essential
+#   type: Bash script
+#   Purpose: Installs essential packages for my HP Probook 450 G8 Notebook
+
+#   Copyright (C) 2023  fkol k4, "fkolyvas at gmail dot com"
+
+#   This program is free software; you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation; either version 2 of the License, or
+#   (at your option) any later version.
+
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+
+#   You should have received a copy of the GNU General Public License along
+#   with this program; if not, write to the Free Software Foundation, Inc.,
+#   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+
+
+function deb_management() {
+    # "deb" package management packages
+    message="02. Installing '.deb' management tools..."
+    clear; echo -e "$message"; sleep 3
+    debarray=(
+        apt-file
+        deborphan
+        gdebi
+        synaptic
+        )
+    sudo apt-get --yes --quiet install ${debarray[@]}
+}
+
+function essential_utilities() {
+    # Kernel extras & essential utilities
+    message="03. Installing essential utilities..."
+    clear; echo -e "$message"; sleep 3
+    essentialarray=(
+        cpulimit
+        locate
+        preload
+        tree
+        )
+    sudo apt-get --yes --no-install-recommends install ${essentialarray[@]}
+}
+
+function download_managers() {
+    # Download & sync managers
+    message="04. Installing Download & sync managers..."
+    clear; echo -e "$message"; sleep 3
+    downloadarray=(
+        axel
+        curl
+        deluge
+        git
+        rsync
+        zsync
+        )
+    sudo apt-get --yes --quiet install ${downloadarray[@]}
+}
+
+function codecs() {
+    # Various codecs & compression algorithms
+    message="05. Installing various codecs & compression algorithms..."
+    clear; echo -e "$message"; sleep 3
+        codecarray=(
+        default-jre
+        lzma
+        lzd
+        lzip
+        lziprecover
+        lzop
+        liblz4-1
+        liblz4-tool
+        )
+    sudo apt-get --yes --quiet install ${codecarray[@]}
+}
+
+function editors() {
+    # Editors
+    message="06. Installing code & text editors..."
+    clear; echo -e "$message"; sleep 3
+    textarray=(
+        nano
+        mousepad
+        geany
+        geany-plugins
+        meld
+        )
+    sudo apt-get --yes --quiet install ${textarray[@]}
+}
+
+function info_n_recovery() {
+    # Sys_info, recovery etc.
+    message="07. Installing System_info, recovery tools etc..."
+    clear; echo -e "$message"; sleep 3
+    array=(
+        fancontrol
+        gparted
+        htop
+        iotop
+        lm-sensors
+        lshw
+        lsof
+        lsscsi
+        )
+    sudo apt-get --yes --quiet install ${array[@]}
+    sync
+    sleep 1
+    # Enable sensors
+    sudo sensors-detect --auto
+    # Old command for sensors detecting
+    #yes | sudo sensors-detect
+}
+
+function main() {
+    message="00. running 'fkol-k4.10.essential'..."
+    clear; echo -e "$message"; sleep 1
+    headers_and_modules
+    deb_management
+    essential_utilities
+    download_managers
+    codecs
+    editors
+    info_n_recovery
+    sync
+}
+
+main"$@"

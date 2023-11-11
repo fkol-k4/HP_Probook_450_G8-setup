@@ -1,0 +1,154 @@
+#!/bin/bash
+
+#   file: fkol-k4.20.common
+#   type: Bash script
+#   Purpose: Installs common packages
+
+#   Copyright (C) 2016  fkol k4, "fkolyvas at gmail dot com"
+
+#   This program is free software; you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation; either version 2 of the License, or
+#   (at your option) any later version.
+
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+
+#   You should have received a copy of the GNU General Public License along
+#   with this program; if not, write to the Free Software Foundation, Inc.,
+#   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+function install_keepassx() {
+    # Install keepassx
+    keepassxmessage='
+    Installing KeepassX2...
+    '
+    clear; echo -e "$keepassxmessage"; sleep 1
+    sudo apt-get --yes --quiet install keepassx
+    sync
+}
+
+function install_remarkable_editor() {
+    # 1. Installing "Remarkable" markdown editor
+    remarkablemessage='
+    Installing "Remarkable" markdown editor...
+    '
+    clear; echo -e "$remarkablemessage"; sleep 2
+    cd /tmp/
+    wget "https://remarkableapp.github.io/files/remarkable_1.87_all.deb"
+    sync; sleep 1; sync
+	sudo apt-get --yes --quiet install gdebi
+    sudo gdebi --non-interactive "remarkable_1.87_all.deb"
+    sync; sleep 1; sync
+    rm -rf "remarkable_1.87_all.deb"
+    cd $HOME
+}
+
+function install_haroopad_editor() {
+	# Installing "HarooPad" markdown editor
+	haroopadmessage='
+	Installing "HarooPad" markdown editor...
+	'
+    clear; echo -e "$haroopadmessage"; sleep 2
+    cd /tmp/
+    wget "https://bitbucket.org/rhiokim/haroopad-download/downloads/haroopad-v0.13.1-x64.deb"
+    sync; sleep 1; sync
+	sudo apt-get --yes --quiet install gdebi
+    sudo gdebi --non-interactive "haroopad-v0.13.1-x64.deb"
+    sync; sleep 1; sync
+    rm -rf "haroopad-v0.13.1-x64.deb"
+    cd $HOME
+}
+
+function install_stremio() {
+    # install Stremio from Web
+    stremiomessage='
+    Installing "Stremio" media player...
+    '
+    clear; echo -e "$stremiomessage"; sleep 2
+    cd /tmp/
+    wget "https://dl.strem.io/shell-linux/v4.4.164/Stremio_v4.4.164.deb"
+    sync; sleep 1; sync
+	sudo apt-get --yes --quiet install gdebi
+    sudo gdebi --non-interactive "Stremio_v4.4.164.deb"
+    sync; sleep 1; sync
+    rm -rf "Stremio_v4.4.164.deb"
+    cd $HOME
+}
+
+function install_freetube() {
+	# Install Freetube from web
+	freetubemessage='
+	Installing FreeTube video player...
+	'
+	clear; echo -e "$freetubemessage"; sleep 2
+    cd /tmp/
+    wget "https://github.com/FreeTubeApp/FreeTube/releases/download/v0.19.1-beta/freetube_0.19.1_amd64.deb"
+    sync; sleep 1; sync
+	sudo apt-get --yes --quiet install gdebi
+    sudo gdebi --non-interactive "freetube_0.19.1_amd64.deb"
+    sync; sleep 1; sync
+    rm -rf "freetube_0.19.1_amd64.deb"
+    cd $HOME
+}
+
+function install_administration_tools(){
+	# 1. Installing Raspberry Pi Imager
+	piimagermessage='
+	Installing Raspberry Pi Imager...
+	'
+	clear; echo -e "$piimagermessage"; sleep 2
+	sudo apt-get --yes --quiet install rpi-imager
+	sync; sleep 1; sync
+}
+
+function install_media_tools() {
+    # Media tools
+    mediatoolsmessage='
+    Installing media packages & tools...
+    '
+    clear; echo -e "$mediatoolsmessage"; sleep 1
+    mediaarray=(
+        inkscape
+        gimp
+        gimp-data-extras
+        clementine
+        vlc
+        )
+    sudo apt-get --yes --quiet install ${mediaarray[@]}
+    sync; sleep 1; sync
+}
+
+function install_office_tools() {
+    # Office
+    officetoolsmessage='
+    Installing office stuff...
+    '
+    clear; echo -e "$officetoolsmessage"; sleep 1
+    officearray=(
+        libreoffice
+        libreoffice-pdfimport
+        libreoffice-templates
+        seahorse
+        cups-pdf
+        catfish
+        )
+    sudo apt-get --yes --quiet install ${officearray[@]}
+    sync; sleep 1; sync
+}
+
+function main() {
+    install_keepassx
+    install_remarkable_editor
+    install_haroopad_editor
+    install_stremio
+    install_freetube
+    install_administration_tools
+    install_media_tools
+    install_office_tools
+    sync; sleep 1; sync
+}
+
+main"$@"

@@ -1,0 +1,170 @@
+#!/bin/bash
+
+#   file: /path/to/fkol-k4.bash.script
+#   type: Bash script
+#   action: Adds scripts to specific dotfiles
+
+#   Copyright (C) <year>  fkol k4, "fkolyvas at gmail dot com".
+
+#   This program is free software; you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation; either version 2 of the License, or
+#   (at your option) any later version.
+
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+
+#   You should have received a copy of the GNU General Public License along
+#   with this program; if not, write to the Free Software Foundation, Inc.,
+#   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+# 	Setting up global variables
+clear
+workingdirectory="/tmp/LaptopSetupDirectory"
+	
+function create_work_directory() {
+    # Create work directory and move into it
+	sync; sleep 1; sync
+    workingdirectorymessage="
+        Creating work directory, please wait...
+        "
+    clear; echo "$workingdirectorymessage"; sleep 2
+	mkdir -p "$workingdirectory"
+	cd "$workingdirectory"
+}
+
+# Setting up notification icon
+notificationicon="/tmp/LaptopSetupDirectory/HP_Probook_450_G8-setup/LinuxMint_22.1_Victoria/SystemFiles/usr/share/icons/fkol-k4/fkol-k4.donkey.svg"
+
+function install_essential_packages(){
+	# Installing essential packages
+	message="	
+	Making sure that essential packages (git rsync notify-send) are installed. Please wait...
+	"
+	sudo apt-get --yes --quiet install git rsync notify-send
+	sync; sleep 1; sync
+	essentialpackagesmessage='
+		OK! All essential packages are installed. Continuing...
+		'
+}
+
+function clone_setup_data(){
+	# Cloning installation data
+	sync; sleep 1; sync
+	message="    Cloning installation data, please wait..."
+    clear; echo "$message"; sleep 2
+    git clone https://github.com/fkol-k4/HP_Probook_450_G8-setup.git
+    sync; sleep 1; sync
+	notify-senf --icon="$notificationicon" --t 4000 "	Setup Data cloned. Continuing setup..."
+}
+
+function call_install_scripts(){
+	# Calling installation scripts
+	cd "HP_Probook_450_G8-setup/LinuxMint_22.1/InstallScripts/"
+	notify-senf --icon="$notificationicon" --t 4000 "	Calling essential packages install script..."
+	./"fkol-k4.10.essential"
+	notify-senf --icon="$notificationicon" --t 4000 "	Essential packages install script finished. Continuing setup..."
+	sync; sleep 1; sync
+	notify-senf --icon="$notificationicon" --t 4000 "	Calling common packages install script..."
+	./"fkol-k4.20.common"
+	notify-senf --icon="$notificationicon" --t 4000 "	Common packages install script finished. Continuing setup..."
+	sync; sleep 1; sync
+}
+
+function copy_systemfiles(){
+	# Copying System Files from Git repo to System
+	message="Copying System Files from Git repo to System, please wait..."
+	notify-senf --icon="$notificationicon" --t 4000 "	Copying System Files from Git repo to System..."
+	clear; echo "$message"; sleep 2
+	sudo rsync -avz "$workingdirectory"/HP_Probook_450_G8-setup/LinuxMint_22.1_Victoria/SystemFiles/* /
+	notify-senf --icon="$notificationicon" --t 4000 "	 Files from Git repo have being copied to System. Continuing setup..."
+	sync; sleep 1; sync
+	sudo update-grub
+}
+
+function bashrc_additions(){
+	# .bashrc additions
+	bashrctext='
+
+##  fkol-k4 additions
+##  =================
+#   fkol-k4 GPG Key
+GPG_KEY="AC5A0B22"
+
+#   fkol-k4 Aliases
+alias fkol_date="date +%Y-%m-%d"
+alias fkol_date-with-time="date +%Y-%m-%d-%T"
+alias fkol_getkey="sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys "
+
+#   fkol-k4 Functions
+function fkol_updates() {
+    # system updates && cleanup
+    sudo apt-get update
+    sudo apt --yes --quiet dist-upgrade
+    sudo apt-get --yes clean
+    sudo apt-get --yes autoclean
+    sudo apt-get --yes --purge autoremove
+    sudo apt-get --yes --fix-missing install
+    sudo apt-get --yes --fix-broken install
+    sudo dpkg --configure -a
+    sync; sleep 1; sync
+}
+
+function fkol_DE_reset() {
+    # reset DE to defaults
+    rm -rf $HOME/.cache
+    rm -rf $HOME/.config/dconf
+    rm -rf $HOME/.gconf
+    rm -rf $HOME/.kde
+    rm -rf $HOME/.xfce
+    rm -rf $HOME/.cinnamon
+}
+
+function fkol_network_restart() {
+    # Restart network systems
+    sudo ip addr flush wlp1s0
+    sudo systemctl restart networking.service
+}
+
+
+function fkol_disable_NetworkManager_wait_online_service() {
+    # disable service
+    sudo systemctl disable NetworkManager-wait-online.service
+}
+
+function fkol_disable_SnapPackages() {
+    # Disable service
+    sudo systemctl disable snapd.service
+}
+
+function fkol_disable_TouchPad() {
+    # Disable Touchpad
+    synclient TouchpadOff=1
+}
+
+function fkol_enable_TouchPad() {
+    # Enable Touchpad
+    synclient TouchpadOff=0
+}
+
+'
+	echo "$bashrctext" | tee -a "$HOME/.bashrc"	
+	sync; sleep 1; sync
+	source "$HOME/.bashrc"
+}
+
+function main() {
+    # main function
+    message=""
+    clear; echo "$message"; sleep 2
+    create_work_directory
+    install_essential_packages
+    clone_setup_data
+    call_install_scripts
+    copy_systemfiles
+    bashrc_additions
+}
+
+main"$@"

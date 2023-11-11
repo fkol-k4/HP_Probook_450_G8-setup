@@ -1,4 +1,0 @@
-# Home: http://dl.google.com/linux
-# GetKey: wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-deb [arch=amd64] http://dl.google.com/linux/earth/deb/ stable main #Google Earth
-    
