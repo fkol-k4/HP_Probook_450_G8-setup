@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#   file: fkol-k4.10.essential
+#   file: fkol-k4.10.probook.essentials.sh
 #   type: Bash script
 #   Purpose: Installs essential packages for my HP Probook 450 G8 Notebook
 
@@ -20,39 +20,49 @@
 #   with this program; if not, write to the Free Software Foundation, Inc.,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-
+#	Global variables & aliases
+BOLD_LETTERS=$(tput bold)
+NORMAL_LETTERS=$(tput sgr0)
 
 function deb_management() {
-    # "deb" package management packages
-    message="02. Installing '.deb' management tools..."
-    clear; echo -e "$message"; sleep 3
-    debarray=(
+    # Set variables
+    msg="$BOLD_LETTERS
+    Installing deb management tools...
+    $NORMAL_LETTERS"
+    clear; echo -e "$msg"; sleep 2
+    array=(
         apt-file
         deborphan
         gdebi
         synaptic
         )
-    sudo apt-get --yes --quiet install ${debarray[@]}
+    sudo apt-get --yes --quiet install --no-install-recommends ${array[@]}
+    sync; sleep 1; sync
 }
 
-function essential_utilities() {
-    # Kernel extras & essential utilities
-    message="03. Installing essential utilities..."
-    clear; echo -e "$message"; sleep 3
-    essentialarray=(
+function dev_utilities() {
+    # Set variables
+    msg="$BOLD_LETTERS
+	Installing essential utilities...
+	$NORMAL_LETTERS"
+    clear; echo -e "$msg"; sleep 2
+    array=(
         cpulimit
         locate
         preload
         tree
         )
-    sudo apt-get --yes --no-install-recommends install ${essentialarray[@]}
+    sudo apt-get --yes --quiet install --no-install-recommends ${array[@]}
+    sync; sleep 1; sync
 }
 
 function download_managers() {
-    # Download & sync managers
-    message="04. Installing Download & sync managers..."
-    clear; echo -e "$message"; sleep 3
-    downloadarray=(
+    # Set variables
+    msg="$BOLD_LETTERS
+	Installing Download & sync managers...
+    $NORMAL_LETTERS"
+    clear; echo -e "$msg"; sleep 2
+    array=(
         axel
         curl
         deluge
@@ -60,14 +70,17 @@ function download_managers() {
         rsync
         zsync
         )
-    sudo apt-get --yes --quiet install ${downloadarray[@]}
+    sudo apt-get --yes --quiet install --no-install-recommends ${array[@]}
+    sync; sleep 1; sync
 }
 
-function codecs() {
-    # Various codecs & compression algorithms
-    message="05. Installing various codecs & compression algorithms..."
-    clear; echo -e "$message"; sleep 3
-        codecarray=(
+function codecs_n_compression() {
+    # Set variables
+    msg="$BOLD_LETTERS
+	Installing various codecs & compression algorithms...
+    $NORMAL_LETTERS"
+    clear; echo -e "$msg"; sleep 2
+    array=(
         default-jre
         lzma
         lzd
@@ -76,28 +89,34 @@ function codecs() {
         lzop
         liblz4-1
         liblz4-tool
-        )
-    sudo apt-get --yes --quiet install ${codecarray[@]}
+		)
+    sudo apt-get --yes --quiet install --no-install-recommends ${array[@]}
+    sync; sleep 1; sync
 }
 
-function editors() {
-    # Editors
-    message="06. Installing code & text editors..."
-    clear; echo -e "$message"; sleep 3
-    textarray=(
+function code_n_text() {
+    # Set variables
+    msg="$BOLD_LETTERS
+	Installing code & text editors...
+    $NORMAL_LETTERS"
+    clear; echo -e "$msg"; sleep 2
+    array=(
         nano
         mousepad
         geany
         geany-plugins
         meld
         )
-    sudo apt-get --yes --quiet install ${textarray[@]}
+    sudo apt-get --yes --quiet install --no-install-recommends ${array[@]}
+    sync; sleep 1; sync
 }
 
 function info_n_recovery() {
-    # Sys_info, recovery etc.
-    message="07. Installing System_info, recovery tools etc..."
-    clear; echo -e "$message"; sleep 3
+    # Set variables
+    msg="$BOLD_LETTERS
+    Installing System_info, recovery tools etc...
+    $NORMAL_LETTERS"
+    clear; echo -e "$msg"; sleep 2
     array=(
         fancontrol
         gparted
@@ -108,9 +127,8 @@ function info_n_recovery() {
         lsof
         lsscsi
         )
-    sudo apt-get --yes --quiet install ${array[@]}
-    sync
-    sleep 1
+    sudo apt-get --yes --quiet install --no-install-recommends ${array[@]}
+    sync; sleep 1; sync
     # Enable sensors
     sudo sensors-detect --auto
     # Old command for sensors detecting
@@ -118,16 +136,13 @@ function info_n_recovery() {
 }
 
 function main() {
-    message="00. running 'fkol-k4.10.essential'..."
-    clear; echo -e "$message"; sleep 1
-    headers_and_modules
     deb_management
-    essential_utilities
+    dev_utilities
     download_managers
-    codecs
-    editors
+    codecs_n_compression
+    code_n_text
     info_n_recovery
-    sync
+    sync; sleep 1; sync
 }
 
 main"$@"
