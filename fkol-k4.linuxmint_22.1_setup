@@ -29,7 +29,6 @@ REPO_DIR=`echo "$GIT_REPO" | awk -F'[/.]' '{print $6}'`
 
 #   Create deb packages backup directory
 cd "$HOME"
-sudo apt-get --yes --quiet install gdebi
 BACKUPDIR="$HOME/Deb_packages_backup"
 mkdir -p "$BACKUPDIR"
 
@@ -41,53 +40,48 @@ function setup_working_directory(){
 
 function install_startup_packages(){
     # Set variables
-	msg1="$BOLD_LETTERS
-	Making sure that essential packages (git rsync notify-send) are installed. Please wait...
-	$NORMAL_LETTERS"
-	msg2="$BOLD_LETTERS
-	OK! All essential packages have been installed. Continuing...
+    msgbody="Making sure that essential packages (git rsync notify-send) are installed. Please wait..."
+	msg="$BOLD_LETTERS
+	$msgbody
 	$NORMAL_LETTERS"
 	# Install essential packages
 	clear
-    echo "$msg1"; sleep 2
-	sudo apt-get --yes --quiet install git rsync notification-daemon
+    echo "$msg"; sleep 2
+	sudo apt-get --yes --quiet install git rsync notification-daemon gdebi
 	sync; sleep 1; sync
-	echo "$msg2"; sleep 2
+	msgbody="OK! All essential packages have been installed. Continuing..."
+	echo "$msg"; notify-send-t 4000 "$msgbody"; sleep 2
 }
 
 function clone_setup_data(){
     # Set variables
-	msg1="$BOLD_LETTERS
-    Cloning installation data, please wait...
-	$NORMAL_LETTERS"
-	msg2="$BOLD_LETTERS
-	OK! Installation data have been cloned. Continuing...
+    msgbody="Cloning installation data, please wait..."
+	msg="$BOLD_LETTERS
+    $msgbody
 	$NORMAL_LETTERS"
     clear
     cd "$WORKING_DIR"/
-    echo "$msg1"; sleep 2
+	echo "$msg"; notify-send-t 4000 "$msgbody"; sleep 2
 	# Cloning installation data
     git clone "$GIT_REPO"
     sync; sleep 1; sync
-	echo "$msg2"; sleep 2
+	msgbody="OK! Installation data have been cloned. Continuing..."
+	echo "$msg"; notify-send-t 4000 "$msgbody"; sleep 2
 }
 
 function copy_systemfiles(){
 	# Copying System Files from Git repo to System
 	filesdir="linux_mint_22.1_Victoria/SystemFiles"
-	msg1body="    Copying System Files from Git repo to System, please wait..."
-	msg2body="	Files from Git repo have being copied to System. Continuing setup..."
-	msg1="$BOLD_LETTERS
-	$msg1body
+	msgbody="Copying System Files from Git repo to System, please wait..."
+	msg="$BOLD_LETTERS
+	$msgbody
 	$NORMAL_LETTERS"
-	msg2="$BOLD_LETTERS
-	$msg2body
-	$NORMAL_LETTERS"
-	clear; echo "$msg1"; notify-send --icon="$NOTIFICATION_ICON" -t 4000 "$msg1"
+	echo "$msg"; notify-send-t 4000 "$msgbody"; sleep 2
 	sudo rsync -avz "$WORKING_DIR/$REPO_DIR/$filesdir/" /
 	sync; sleep 1; sync
 	sudo update-grub
-	clear; echo "$msg2"; notify-send --icon="$NOTIFICATION_ICON" -t 4000 "$msg2"
+	msgbody="Files from Git repo have being copied to System. Continuing setup..."
+	echo "$msg"; notify-send-t 4000 "$msgbody"; sleep 2
 	sync; sleep 1; sync
 }
 
@@ -97,7 +91,7 @@ function install_essential_packages() {
     msg="$BOLD_LETTERS
     $msgbody
     $NORMAL_LETTERS"
-    clear; echo -e "$msg"; sleep 2
+	echo "$msg"; notify-send-t 4000 "$msgbody"; sleep 2
     array=(
         apt-file
         deborphan
@@ -108,7 +102,7 @@ function install_essential_packages() {
     sync; sleep 1; sync
     # Set variables
     msgbody="Installing essential utilities..."
-    clear; echo -e "$msg"; sleep 2
+	echo "$msg"; notify-send-t 4000 "$msgbody"; sleep 2
     array=(
         cpulimit
         locate
@@ -119,7 +113,7 @@ function install_essential_packages() {
     sync; sleep 1; sync
     # Set variables
     msgbody="Installing Download & sync managers..."
-    clear; echo -e "$msg"; sleep 2
+	echo "$msg"; notify-send-t 4000 "$msgbody"; sleep 2
     array=(
         axel
         curl
@@ -132,7 +126,7 @@ function install_essential_packages() {
     sync; sleep 1; sync
     # Set variables
     msgbody="Installing various codecs & compression algorithms..."
-    clear; echo -e "$msg"; sleep 2
+	echo "$msg"; notify-send-t 4000 "$msgbody"; sleep 2
     array=(
         default-jre
         lzma
@@ -147,7 +141,7 @@ function install_essential_packages() {
     sync; sleep 1; sync
     # Set variables
     msgbody="Installing code & text editors..."
-    clear; echo -e "$msg"; sleep 2
+	echo "$msg"; notify-send-t 4000 "$msgbody"; sleep 2
     array=(
         nano
         mousepad
@@ -159,7 +153,7 @@ function install_essential_packages() {
     sync; sleep 1; sync
     # Set variables
     msgbody="Installing System_info, recovery tools etc..."
-    clear; echo -e "$msg"; sleep 2
+	echo "$msg"; notify-send-t 4000 "$msgbody"; sleep 2
     array=(
         fancontrol
         gparted
@@ -184,7 +178,7 @@ function install_common_packages() {
     msg="$BOLD_LETTERS
     $msgbody
     $NORMAL_LETTERS"
-    clear; echo -e "$msg"; sleep 2
+	echo "$msg"; notify-send-t 4000 "$msgbody"; sleep 2
     # Begin installation
     array=(
 		keepassx
@@ -194,7 +188,7 @@ function install_common_packages() {
 	sync; sleep 1; sync
     # Set variables
     msgbody="Installing Web Packages..."
-    clear; echo -e "$msg"; sleep 2
+	echo "$msg"; notify-send-t 4000 "$msgbody"; sleep 2
     # Begin installation
     array=(
 		firefox
@@ -204,7 +198,7 @@ function install_common_packages() {
     sync; sleep 1; sync
     # Set variables
     msgbody="Installing media packages & tools..."
-    clear; echo -e "$msg"; sleep 2
+	echo "$msg"; notify-send-t 4000 "$msgbody"; sleep 2
     # Begin installation
     array=(
         inkscape
@@ -219,7 +213,7 @@ function install_common_packages() {
     sync; sleep 1; sync
     # Set variables
     msgbody="Installing office stuff..."
-    clear; echo -e "$msg"; sleep 2
+	echo "$msg"; notify-send-t 4000 "$msgbody"; sleep 2
     # Begin installation
     array=(
         libreoffice
@@ -238,10 +232,11 @@ function install_stremio() {
     pkgbackupdir="Stremio_Video_Player"
     pkgversion="https://dl.strem.io/shell-linux/v4.4.164/Stremio_v4.4.164.deb"
     pkgname=`echo "$pkgversion" | awk 'BEGIN { FS = "/" } ; { print $6 }'`
+	msgbody="Installing Stremio media player..."
     msg="$BOLD_LETTERS
-    Installing Stremio media player...
+    $msgbody
     $NORMAL_LETTERS"
-    clear; echo -e "$msg"; sleep 2
+	echo "$msg"; notify-send-t 4000 "$msgbody"; sleep 2
     mkdir -p "$BACKUPDIR/$pkgbackupdir"
     cd "$BACKUPDIR/$pkgbackupdir/"
     [[ ! -f "$pkgname" ]] && wget "$pkgversion"
@@ -257,10 +252,11 @@ function install_freetube() {
     pkgbackupdir="FreeTube_Video_Player"
     pkgversion="https://github.com/FreeTubeApp/FreeTube/releases/download/v0.19.1-beta/freetube_0.19.1_amd64.deb"
     pkgname=`echo "$pkgversion" | awk 'BEGIN { FS = "/" } ; { print $9 }'`
+    msgbody="Installing FreeTube media player..."
     msg="$BOLD_LETTERS
-    Installing FreeTube media player...
+    $msgbody
     $NORMAL_LETTERS"
-    clear; echo -e "$msg"; sleep 2
+	echo "$msg"; notify-send-t 4000 "$msgbody"; sleep 2
     mkdir -p "$BACKUPDIR/$pkgbackupdir"
     cd "$BACKUPDIR/$pkgbackupdir/"
     [[ ! -f "$pkgname" ]] && wget "$pkgversion"
@@ -278,10 +274,11 @@ function install_oracle_virtualbox() {
     pkgname=`echo "$pkgversion" | awk 'BEGIN { FS = "/" } ; { print $6 }'`
     extpackversion="https://download.virtualbox.org/virtualbox/6.1.48/Oracle_VM_VirtualBox_Extension_Pack-6.1.48.vbox-extpack"
     extpackname=`echo $extpackversion | awk 'BEGIN { FS = "/" } ; { print $6 }'`
-	msg="$BOLD_LETTERS
-    Installing Oracle Virtualbox...
+	msgbody="Installing Oracle Virtualbox..."
+    msg="$BOLD_LETTERS
+    $msgbody
     $NORMAL_LETTERS"
-    clear; echo -e "$msg"; sleep 2
+	echo "$msg"; notify-send-t 4000 "$msgbody"; sleep 2
     mkdir -p "$BACKUPDIR/$pkgbackupdir"
     cd "$BACKUPDIR/$pkgbackupdir/"
     [[ ! -f "$pkgname" ]] && wget "$pkgversion"
@@ -303,10 +300,11 @@ function install_VariCAD() {
     pkg2version="https://www.varicad.com/userdata/files/release/en/varicad2023-view-en_2.08_amd64.deb"
     pkg1name=`echo "$pkg1version" | awk 'BEGIN { FS = "/" } ; { print $8 }'`
     pkg2name=`echo "$pkg2version" | awk 'BEGIN { FS = "/" } ; { print $8 }'`
-	msg="$BOLD_LETTERS
-    Installing VariCAD for Linux...
+	msgbody="Installing VariCAD for Linux..."
+    msg="$BOLD_LETTERS
+    $msgbody
     $NORMAL_LETTERS"
-    clear; echo -e "$msg"; sleep 2
+	echo "$msg"; notify-send-t 4000 "$msgbody"; sleep 2
     # Install packages
     mkdir -p "$BACKUPDIR/$pkgbackupdir"
     cd "$BACKUPDIR/$pkgbackupdir/"
@@ -325,10 +323,11 @@ function install_remarkable_editor() {
     pkgbackupdir="Remarkable_markdown_editor"
     pkgversion="https://remarkableapp.github.io/files/remarkable_1.87_all.deb"
     pkgname=`echo "$pkgversion" | awk 'BEGIN { FS = "/" } ; { print $5 }'`
+    msgbody="Installing Remarkable markdown editor..."
     msg="$BOLD_LETTERS
-    Installing Remarkable markdown editor...
+    $msgbody
     $NORMAL_LETTERS"
-    clear; echo -e "$msg"; sleep 2
+	echo "$msg"; notify-send-t 4000 "$msgbody"; sleep 2
     mkdir -p "$BACKUPDIR/$pkgbackupdir"
     cd "$BACKUPDIR/$pkgbackupdir/"
     [[ ! -f "$pkgname" ]] && wget "$pkgversion"
@@ -344,10 +343,11 @@ function install_haroopad_editor() {
     pkgbackupdir="Haroopad_markdown_editor"
     pkgversion="https://bitbucket.org/rhiokim/haroopad-download/downloads/haroopad-v0.13.1-x64.deb"
     pkgname=`echo "$pkgversion" | awk 'BEGIN { FS = "/" } ; { print $7 }'`
+    msgbody="Installing HarooPad markdown editor..."
     msg="$BOLD_LETTERS
-    Installing HarooPad markdown editor...
+    $msgbody
     $NORMAL_LETTERS"
-    clear; echo -e "$msg"; sleep 2
+	echo "$msg"; notify-send-t 4000 "$msgbody"; sleep 2
     mkdir -p "$BACKUPDIR/$pkgbackupdir"
     cd "$BACKUPDIR/$pkgbackupdir/"
     [[ ! -f "$pkgname" ]] && wget "$pkgversion"
@@ -360,10 +360,11 @@ function install_haroopad_editor() {
 
 function install_plank_dock() {
     # Set variables
+    msgbody="Installing administration tools..."
     msg="$BOLD_LETTERS
-    Installing administration tools...
+    $msgbody
     $NORMAL_LETTERS"
-    clear; echo -e "$msg"; sleep 2
+	echo "$msg"; notify-send-t 4000 "$msgbody"; sleep 2
     # Begin installation
     array=(
 		plank
@@ -375,6 +376,11 @@ function install_plank_dock() {
 
 function add_nopasswd_option() {
     # Set variables
+	msgbody="Adding NOPASSWD option to $USER ..."
+    msg="$BOLD_LETTERS
+    $msgbody
+    $NORMAL_LETTERS"
+	echo "$msg"; notify-send-t 4000 "$msgbody"; sleep 2
 	txtbody="
 # 	NOPASSWD option for sudo use, added by $USER
 $USER ALL=(ALL) NOPASSWD: ALL
