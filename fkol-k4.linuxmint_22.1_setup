@@ -75,11 +75,13 @@ function clone_setup_data(){
 function copy_systemfiles(){
 	# Copying System Files from Git repo to System
 	filesdir="linux_mint_22.1_Victoria/SystemFiles"
+	msg1body="    Copying System Files from Git repo to System, please wait..."
+	msg2body="	Files from Git repo have being copied to System. Continuing setup..."
 	msg1="$BOLD_LETTERS
-    Copying System Files from Git repo to System, please wait...
+	$msg1body
 	$NORMAL_LETTERS"
 	msg2="$BOLD_LETTERS
-	Files from Git repo have being copied to System. Continuing setup...
+	$msg2body
 	$NORMAL_LETTERS"
 	clear; echo "$msg1"; notify-send --icon="$NOTIFICATION_ICON" -t 4000 "$msg1"
 	sudo rsync -avz "$WORKING_DIR/$REPO_DIR/$filesdir/" /
@@ -91,8 +93,9 @@ function copy_systemfiles(){
 
 function install_essential_packages() {
     # Set variables
+    msgbody="Installing deb management tools..."
     msg="$BOLD_LETTERS
-    Installing deb management tools...
+    $msgbody
     $NORMAL_LETTERS"
     clear; echo -e "$msg"; sleep 2
     array=(
@@ -104,9 +107,7 @@ function install_essential_packages() {
     sudo apt-get --yes --quiet install --no-install-recommends ${array[@]}
     sync; sleep 1; sync
     # Set variables
-    msg="$BOLD_LETTERS
-	Installing essential utilities...
-	$NORMAL_LETTERS"
+    msgbody="Installing essential utilities..."
     clear; echo -e "$msg"; sleep 2
     array=(
         cpulimit
@@ -117,9 +118,7 @@ function install_essential_packages() {
     sudo apt-get --yes --quiet install --no-install-recommends ${array[@]}
     sync; sleep 1; sync
     # Set variables
-    msg="$BOLD_LETTERS
-	Installing Download & sync managers...
-    $NORMAL_LETTERS"
+    msgbody="Installing Download & sync managers..."
     clear; echo -e "$msg"; sleep 2
     array=(
         axel
@@ -132,9 +131,7 @@ function install_essential_packages() {
     sudo apt-get --yes --quiet install --no-install-recommends ${array[@]}
     sync; sleep 1; sync
     # Set variables
-    msg="$BOLD_LETTERS
-	Installing various codecs & compression algorithms...
-    $NORMAL_LETTERS"
+    msgbody="Installing various codecs & compression algorithms..."
     clear; echo -e "$msg"; sleep 2
     array=(
         default-jre
@@ -149,9 +146,7 @@ function install_essential_packages() {
     sudo apt-get --yes --quiet install --no-install-recommends ${array[@]}
     sync; sleep 1; sync
     # Set variables
-    msg="$BOLD_LETTERS
-	Installing code & text editors...
-    $NORMAL_LETTERS"
+    msgbody="Installing code & text editors..."
     clear; echo -e "$msg"; sleep 2
     array=(
         nano
@@ -163,9 +158,7 @@ function install_essential_packages() {
     sudo apt-get --yes --quiet install --no-install-recommends ${array[@]}
     sync; sleep 1; sync
     # Set variables
-    msg="$BOLD_LETTERS
-    Installing System_info, recovery tools etc...
-    $NORMAL_LETTERS"
+    msgbody="Installing System_info, recovery tools etc..."
     clear; echo -e "$msg"; sleep 2
     array=(
         fancontrol
@@ -187,8 +180,9 @@ function install_essential_packages() {
 
 function install_common_packages() {
     # Set variables
+    msgbody="Installing administration tools..."
     msg="$BOLD_LETTERS
-    Installing administration tools...
+    $msgbody
     $NORMAL_LETTERS"
     clear; echo -e "$msg"; sleep 2
     # Begin installation
@@ -199,9 +193,7 @@ function install_common_packages() {
 	sudo apt-get --yes --quiet install ${array[@]}
 	sync; sleep 1; sync
     # Set variables
-    msg="$BOLD_LETTERS
-    Installing Web Packages...
-    $NORMAL_LETTERS"
+    msgbody="Installing Web Packages..."
     clear; echo -e "$msg"; sleep 2
     # Begin installation
     array=(
@@ -211,9 +203,7 @@ function install_common_packages() {
     sudo apt-get --yes --quiet install ${array[@]}
     sync; sleep 1; sync
     # Set variables
-    msg="$BOLD_LETTERS
-    Installing media packages & tools...
-    $NORMAL_LETTERS"
+    msgbody="Installing media packages & tools..."
     clear; echo -e "$msg"; sleep 2
     # Begin installation
     array=(
@@ -228,9 +218,7 @@ function install_common_packages() {
     sudo apt-get --yes --quiet install ${array[@]}
     sync; sleep 1; sync
     # Set variables
-    msg="$BOLD_LETTERS
-    Installing office stuff...
-    $NORMAL_LETTERS"
+    msgbody="Installing office stuff..."
     clear; echo -e "$msg"; sleep 2
     # Begin installation
     array=(
@@ -256,10 +244,11 @@ function install_stremio() {
     clear; echo -e "$msg"; sleep 2
     mkdir -p "$BACKUPDIR/$pkgbackupdir"
     cd "$BACKUPDIR/$pkgbackupdir/"
-    wget "$pkgversion"
+    [[ ! -f "$pkgname" ]] && wget "$pkgversion"
     sync; sleep 1; sync
     sudo gdebi --non-interactive "$pkgname"
     sync; sleep 1; sync
+    mkdir -p "$HOME/.local/share/applications" ; mv "$HOME/Desktop/*.desktop" $HOME/.local/share/applications/
     cd "$HOME"
 }
 
@@ -267,16 +256,18 @@ function install_freetube() {
 	# Set variables
     pkgbackupdir="FreeTube_Video_Player"
     pkgversion="https://github.com/FreeTubeApp/FreeTube/releases/download/v0.19.1-beta/freetube_0.19.1_amd64.deb"
+    pkgname=`echo "$pkgversion" | awk 'BEGIN { FS = "/" } ; { print $9 }'`
     msg="$BOLD_LETTERS
     Installing FreeTube media player...
     $NORMAL_LETTERS"
     clear; echo -e "$msg"; sleep 2
     mkdir -p "$BACKUPDIR/$pkgbackupdir"
     cd "$BACKUPDIR/$pkgbackupdir/"
-    wget "$pkgversion"
+    [[ ! -f "$pkgname" ]] && wget "$pkgversion"
     sync; sleep 1; sync
     sudo gdebi --non-interactive "$pkgname"
     sync; sleep 1; sync
+    mkdir -p "$HOME/.local/share/applications" ; mv "$HOME/Desktop/*.desktop" $HOME/.local/share/applications/
     cd "$HOME"
 }
 
@@ -293,14 +284,15 @@ function install_oracle_virtualbox() {
     clear; echo -e "$msg"; sleep 2
     mkdir -p "$BACKUPDIR/$pkgbackupdir"
     cd "$BACKUPDIR/$pkgbackupdir/"
-    wget "$pkgversion"
-    wget "$extpackversion"
+    [[ ! -f "$pkgname" ]] && wget "$pkgversion"
+    [[ ! -f "$extpackname" ]] && wget "$extpackversion"
     sync; sleep 1; sync
     sudo gdebi --non-interactive "$pkgname"
     sync; sleep 1; sync
     sudo gpasswd -a "$USER" vboxusers	# adds $USER to group
     virtualbox "$extpackname"			# Install virtualbox extension pack
 	sync; sleep 1; sync
+    mkdir -p "$HOME/.local/share/applications" ; mv "$HOME/Desktop/*.desktop" $HOME/.local/share/applications/
     cd "$HOME"
 }
 
@@ -318,13 +310,13 @@ function install_VariCAD() {
     # Install packages
     mkdir -p "$BACKUPDIR/$pkgbackupdir"
     cd "$BACKUPDIR/$pkgbackupdir/"
-    wget "$pkg1version"
-    wget "$pkg2version"
+    [[ ! -f "$pkg1name" ]] && wget "$pkg1version"
+    [[ ! -f "$pkg2name" ]] && wget "$pkg2version"
     sync; sleep 1; sync
     sudo gdebi --non-interactive "$pkg1name"
-    sync; sleep 1; sync
     sudo gdebi --non-interactive "$pkg2name"
     sync; sleep 1; sync
+    mkdir -p "$HOME/.local/share/applications" ; mv "$HOME/Desktop/*.desktop" $HOME/.local/share/applications/
     cd "$HOME"
 }
 
@@ -339,10 +331,11 @@ function install_remarkable_editor() {
     clear; echo -e "$msg"; sleep 2
     mkdir -p "$BACKUPDIR/$pkgbackupdir"
     cd "$BACKUPDIR/$pkgbackupdir/"
-    wget "$pkgversion"
+    [[ ! -f "$pkgname" ]] && wget "$pkgversion"
     sync; sleep 1; sync
     sudo gdebi --non-interactive "$pkgname"
     sync; sleep 1; sync
+    mkdir -p "$HOME/.local/share/applications" ; mv "$HOME/Desktop/*.desktop" $HOME/.local/share/applications/
     cd "$HOME"
 }
 
@@ -357,10 +350,11 @@ function install_haroopad_editor() {
     clear; echo -e "$msg"; sleep 2
     mkdir -p "$BACKUPDIR/$pkgbackupdir"
     cd "$BACKUPDIR/$pkgbackupdir/"
-    wget "$pkgversion"
+    [[ ! -f "$pkgname" ]] && wget "$pkgversion"
     sync; sleep 1; sync
     sudo gdebi --non-interactive "$pkgname"
     sync; sleep 1; sync
+    mkdir -p "$HOME/.local/share/applications" ; mv "$HOME/Desktop/*.desktop" $HOME/.local/share/applications/
     cd "$HOME"
 }
 
@@ -379,6 +373,18 @@ function install_plank_dock() {
     cd "$HOME"
 }
 
+function add_nopasswd_option() {
+    # Set variables
+	txtbody="
+# 	NOPASSWD option for sudo use, added by $USER
+$USER ALL=(ALL) NOPASSWD: ALL
+	"
+	# Add NOPASSWD option for $USER
+	echo "$txtbody" | sudo tee -a /etc/sudoers
+	sync; sleep 1; sync
+    cd "$HOME"
+}
+
 function choose_package() {
     # Choose extra packages
     echo "$BOLD_LETTERS You can choose the package you want to install from the list below $NORMAL_LETTERS"
@@ -391,6 +397,7 @@ function choose_package() {
     echo "$BOLD_LETTERS 5. Remarkable Markdown Editor $NORMAL_LETTERS"
     echo "$BOLD_LETTERS 6. Haroopad Markdown Editor $NORMAL_LETTERS"
     echo "$BOLD_LETTERS 7. Plank Dock $NORMAL_LETTERS"
+    echo "$BOLD_LETTERS 8. Add NOPASSWD option for your sudo use $NORMAL_LETTERS"
     echo "$BOLD_LETTERS 0. Exit (default) $NORMAL_LETTERS"
     
     echo
@@ -408,8 +415,10 @@ function choose_package() {
         install_remarkable_editor
     elif [[ "$extra_package" == "6" ]]; then
         install_haroopad_editor
-    elif [[ "$extra_package" == "6" ]]; then
+    elif [[ "$extra_package" == "7" ]]; then
         install_plank_dock
+    elif [[ "$extra_package" == "8" ]]; then
+        add_nopasswd_option
     else
         echo "$BOLD_LETTERS 
         Ok, exiting...
