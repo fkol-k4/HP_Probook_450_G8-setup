@@ -80,6 +80,7 @@ function copy_systemfiles(){
 	sudo rsync -avz "$WORKING_DIR/$REPO_DIR/$filesdir/" /
 	sync; sleep 1; sync
 	sudo update-grub
+	sudo fc-cache -fv
 	msgbody="Files from Git repo have being copied to System. Continuing setup..."
 	echo "$msg"; notify-send -t 4000 "$msgbody"; sleep 2
 	sync; sleep 1; sync
