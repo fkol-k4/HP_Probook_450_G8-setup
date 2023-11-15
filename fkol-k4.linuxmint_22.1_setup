@@ -50,7 +50,7 @@ function install_startup_packages(){
 	sudo apt-get --yes --quiet install git rsync notification-daemon gdebi
 	sync; sleep 1; sync
 	msgbody="OK! All essential packages have been installed. Continuing..."
-	echo "$msg"; notify-send-t 4000 "$msgbody"; sleep 2
+	echo "$msg"; notify-send -t 4000 "$msgbody"; sleep 2
 }
 
 function clone_setup_data(){
@@ -61,12 +61,12 @@ function clone_setup_data(){
 	$NORMAL_LETTERS"
     clear
     cd "$WORKING_DIR"/
-	echo "$msg"; notify-send-t 4000 "$msgbody"; sleep 2
+	echo "$msg"; notify-send -t 4000 "$msgbody"; sleep 2
 	# Cloning installation data
     git clone "$GIT_REPO"
     sync; sleep 1; sync
 	msgbody="OK! Installation data have been cloned. Continuing..."
-	echo "$msg"; notify-send-t 4000 "$msgbody"; sleep 2
+	echo "$msg"; notify-send -t 4000 "$msgbody"; sleep 2
 }
 
 function copy_systemfiles(){
@@ -76,12 +76,12 @@ function copy_systemfiles(){
 	msg="$BOLD_LETTERS
 	$msgbody
 	$NORMAL_LETTERS"
-	echo "$msg"; notify-send-t 4000 "$msgbody"; sleep 2
+	echo "$msg"; notify-send -t 4000 "$msgbody"; sleep 2
 	sudo rsync -avz "$WORKING_DIR/$REPO_DIR/$filesdir/" /
 	sync; sleep 1; sync
 	sudo update-grub
 	msgbody="Files from Git repo have being copied to System. Continuing setup..."
-	echo "$msg"; notify-send-t 4000 "$msgbody"; sleep 2
+	echo "$msg"; notify-send -t 4000 "$msgbody"; sleep 2
 	sync; sleep 1; sync
 }
 
@@ -91,7 +91,7 @@ function install_essential_packages() {
     msg="$BOLD_LETTERS
     $msgbody
     $NORMAL_LETTERS"
-	echo "$msg"; notify-send-t 4000 "$msgbody"; sleep 2
+	echo "$msg"; notify-send -t 4000 "$msgbody"; sleep 2
     array=(
         apt-file
         deborphan
@@ -102,7 +102,7 @@ function install_essential_packages() {
     sync; sleep 1; sync
     # Set variables
     msgbody="Installing essential utilities..."
-	echo "$msg"; notify-send-t 4000 "$msgbody"; sleep 2
+	echo "$msg"; notify-send -t 4000 "$msgbody"; sleep 2
     array=(
         cpulimit
         locate
@@ -113,7 +113,7 @@ function install_essential_packages() {
     sync; sleep 1; sync
     # Set variables
     msgbody="Installing Download & sync managers..."
-	echo "$msg"; notify-send-t 4000 "$msgbody"; sleep 2
+	echo "$msg"; notify-send -t 4000 "$msgbody"; sleep 2
     array=(
         axel
         curl
@@ -126,7 +126,7 @@ function install_essential_packages() {
     sync; sleep 1; sync
     # Set variables
     msgbody="Installing various codecs & compression algorithms..."
-	echo "$msg"; notify-send-t 4000 "$msgbody"; sleep 2
+	echo "$msg"; notify-send -t 4000 "$msgbody"; sleep 2
     array=(
         default-jre
         lzma
@@ -141,7 +141,7 @@ function install_essential_packages() {
     sync; sleep 1; sync
     # Set variables
     msgbody="Installing code & text editors..."
-	echo "$msg"; notify-send-t 4000 "$msgbody"; sleep 2
+	echo "$msg"; notify-send -t 4000 "$msgbody"; sleep 2
     array=(
         nano
         mousepad
@@ -153,7 +153,7 @@ function install_essential_packages() {
     sync; sleep 1; sync
     # Set variables
     msgbody="Installing System_info, recovery tools etc..."
-	echo "$msg"; notify-send-t 4000 "$msgbody"; sleep 2
+	echo "$msg"; notify-send -t 4000 "$msgbody"; sleep 2
     array=(
         fancontrol
         gparted
@@ -178,7 +178,7 @@ function install_common_packages() {
     msg="$BOLD_LETTERS
     $msgbody
     $NORMAL_LETTERS"
-	echo "$msg"; notify-send-t 4000 "$msgbody"; sleep 2
+	echo "$msg"; notify-send -t 4000 "$msgbody"; sleep 2
     # Begin installation
     array=(
 		keepassx
@@ -188,7 +188,7 @@ function install_common_packages() {
 	sync; sleep 1; sync
     # Set variables
     msgbody="Installing Web Packages..."
-	echo "$msg"; notify-send-t 4000 "$msgbody"; sleep 2
+	echo "$msg"; notify-send -t 4000 "$msgbody"; sleep 2
     # Begin installation
     array=(
 		firefox
@@ -198,7 +198,7 @@ function install_common_packages() {
     sync; sleep 1; sync
     # Set variables
     msgbody="Installing media packages & tools..."
-	echo "$msg"; notify-send-t 4000 "$msgbody"; sleep 2
+	echo "$msg"; notify-send -t 4000 "$msgbody"; sleep 2
     # Begin installation
     array=(
         inkscape
@@ -213,7 +213,7 @@ function install_common_packages() {
     sync; sleep 1; sync
     # Set variables
     msgbody="Installing office stuff..."
-	echo "$msg"; notify-send-t 4000 "$msgbody"; sleep 2
+	echo "$msg"; notify-send -t 4000 "$msgbody"; sleep 2
     # Begin installation
     array=(
         libreoffice
@@ -236,7 +236,7 @@ function install_stremio() {
     msg="$BOLD_LETTERS
     $msgbody
     $NORMAL_LETTERS"
-	echo "$msg"; notify-send-t 4000 "$msgbody"; sleep 2
+	echo "$msg"; notify-send -t 4000 "$msgbody"; sleep 2
     mkdir -p "$BACKUPDIR/$pkgbackupdir"
     cd "$BACKUPDIR/$pkgbackupdir/"
     [[ ! -f "$pkgname" ]] && wget "$pkgversion"
@@ -256,7 +256,7 @@ function install_freetube() {
     msg="$BOLD_LETTERS
     $msgbody
     $NORMAL_LETTERS"
-	echo "$msg"; notify-send-t 4000 "$msgbody"; sleep 2
+	echo "$msg"; notify-send -t 4000 "$msgbody"; sleep 2
     mkdir -p "$BACKUPDIR/$pkgbackupdir"
     cd "$BACKUPDIR/$pkgbackupdir/"
     [[ ! -f "$pkgname" ]] && wget "$pkgversion"
@@ -278,7 +278,7 @@ function install_oracle_virtualbox() {
     msg="$BOLD_LETTERS
     $msgbody
     $NORMAL_LETTERS"
-	echo "$msg"; notify-send-t 4000 "$msgbody"; sleep 2
+	echo "$msg"; notify-send -t 4000 "$msgbody"; sleep 2
     mkdir -p "$BACKUPDIR/$pkgbackupdir"
     cd "$BACKUPDIR/$pkgbackupdir/"
     [[ ! -f "$pkgname" ]] && wget "$pkgversion"
@@ -293,28 +293,47 @@ function install_oracle_virtualbox() {
     cd "$HOME"
 }
 
-function install_VariCAD() {
+function install_varicad_for_linux() {
     # Set variables
     pkgbackupdir="VariCAD_for_Linux"
-    pkg1version="https://www.varicad.com/userdata/files/release/en/varicad2023-en_2.08_amd64.deb"
-    pkg2version="https://www.varicad.com/userdata/files/release/en/varicad2023-view-en_2.08_amd64.deb"
-    pkg1name=`echo "$pkg1version" | awk 'BEGIN { FS = "/" } ; { print $8 }'`
-    pkg2name=`echo "$pkg2version" | awk 'BEGIN { FS = "/" } ; { print $8 }'`
+    pkgversion="https://www.varicad.com/userdata/files/release/en/varicad2023-en_2.08_amd64.deb"
+    pkgname=`echo "$pkg1version" | awk 'BEGIN { FS = "/" } ; { print $8 }'`
 	msgbody="Installing VariCAD for Linux..."
     msg="$BOLD_LETTERS
     $msgbody
     $NORMAL_LETTERS"
-	echo "$msg"; notify-send-t 4000 "$msgbody"; sleep 2
+	echo "$msg"; notify-send -t 4000 "$msgbody"; sleep 2
     # Install packages
     mkdir -p "$BACKUPDIR/$pkgbackupdir"
     cd "$BACKUPDIR/$pkgbackupdir/"
-    [[ ! -f "$pkg1name" ]] && wget "$pkg1version"
-    [[ ! -f "$pkg2name" ]] && wget "$pkg2version"
+    [[ ! -f "$pkgname" ]] && wget "$pkgversion"
     sync; sleep 1; sync
-    sudo gdebi --non-interactive "$pkg1name"
-    sudo gdebi --non-interactive "$pkg2name"
+    sudo gdebi --non-interactive "$pkgname"
     sync; sleep 1; sync
-    mkdir -p "$HOME/.local/share/applications" ; mv "$HOME/Desktop/*.desktop" $HOME/.local/share/applications/
+    mkdir -p "$HOME/.local/share/applications"
+    mv $HOME/Desktop/*.desktop $HOME/.local/share/applications/
+    cd "$HOME"
+}
+
+function install_varicad_viewer() {
+    # Set variables
+    pkgbackupdir="VariCAD_viewer_for_Linux"
+    pkgversion="https://www.varicad.com/userdata/files/release/en/varicad2023-view-en_2.08_amd64.deb"
+    pkgname=`echo "$pkg2version" | awk 'BEGIN { FS = "/" } ; { print $8 }'`
+	msgbody="Installing VariCAD for Linux..."
+    msg="$BOLD_LETTERS
+    $msgbody
+    $NORMAL_LETTERS"
+	echo "$msg"; notify-send -t 4000 "$msgbody"; sleep 2
+    # Install packages
+    mkdir -p "$BACKUPDIR/$pkgbackupdir"
+    cd "$BACKUPDIR/$pkgbackupdir/"
+    [[ ! -f "$pkgname" ]] && wget "$pkgversion"
+    sync; sleep 1; sync
+    sudo gdebi --non-interactive "$pkgname"
+    sync; sleep 1; sync
+    mkdir -p "$HOME/.local/share/applications"
+    mv $HOME/Desktop/*.desktop $HOME/.local/share/applications/
     cd "$HOME"
 }
 
@@ -327,7 +346,7 @@ function install_remarkable_editor() {
     msg="$BOLD_LETTERS
     $msgbody
     $NORMAL_LETTERS"
-	echo "$msg"; notify-send-t 4000 "$msgbody"; sleep 2
+	echo "$msg"; notify-send -t 4000 "$msgbody"; sleep 2
     mkdir -p "$BACKUPDIR/$pkgbackupdir"
     cd "$BACKUPDIR/$pkgbackupdir/"
     [[ ! -f "$pkgname" ]] && wget "$pkgversion"
@@ -347,7 +366,7 @@ function install_haroopad_editor() {
     msg="$BOLD_LETTERS
     $msgbody
     $NORMAL_LETTERS"
-	echo "$msg"; notify-send-t 4000 "$msgbody"; sleep 2
+	echo "$msg"; notify-send -t 4000 "$msgbody"; sleep 2
     mkdir -p "$BACKUPDIR/$pkgbackupdir"
     cd "$BACKUPDIR/$pkgbackupdir/"
     [[ ! -f "$pkgname" ]] && wget "$pkgversion"
@@ -364,7 +383,7 @@ function install_plank_dock() {
     msg="$BOLD_LETTERS
     $msgbody
     $NORMAL_LETTERS"
-	echo "$msg"; notify-send-t 4000 "$msgbody"; sleep 2
+	echo "$msg"; notify-send -t 4000 "$msgbody"; sleep 2
     # Begin installation
     array=(
 		plank
@@ -380,7 +399,7 @@ function add_nopasswd_option() {
     msg="$BOLD_LETTERS
     $msgbody
     $NORMAL_LETTERS"
-	echo "$msg"; notify-send-t 4000 "$msgbody"; sleep 2
+	echo "$msg"; notify-send -t 4000 "$msgbody"; sleep 2
 	txtbody="
 # 	NOPASSWD option for sudo use, added by $USER
 $USER ALL=(ALL) NOPASSWD: ALL
@@ -393,37 +412,40 @@ $USER ALL=(ALL) NOPASSWD: ALL
 
 function choose_package() {
     # Choose extra packages
-    echo "$BOLD_LETTERS You can choose the package you want to install from the list below $NORMAL_LETTERS"
+    echo "$BOLD_LETTERS You can choose the action you want from the list below $NORMAL_LETTERS"
     echo "$BOLD_LETTERS by entering the number next to it, or type anything else to exit. $NORMAL_LETTERS"
     echo
-    echo "$BOLD_LETTERS 1. Stremio Media Player $NORMAL_LETTERS"
-    echo "$BOLD_LETTERS 2. Freetube Media Player $NORMAL_LETTERS"
-    echo "$BOLD_LETTERS 3. Oracle Virtualbox $NORMAL_LETTERS"
-    echo "$BOLD_LETTERS 4. VariCAD for Linux $NORMAL_LETTERS"
-    echo "$BOLD_LETTERS 5. Remarkable Markdown Editor $NORMAL_LETTERS"
-    echo "$BOLD_LETTERS 6. Haroopad Markdown Editor $NORMAL_LETTERS"
-    echo "$BOLD_LETTERS 7. Plank Dock $NORMAL_LETTERS"
-    echo "$BOLD_LETTERS 8. Add NOPASSWD option for your sudo use $NORMAL_LETTERS"
+    echo "$BOLD_LETTERS 1. Install Stremio Media Player $NORMAL_LETTERS"
+    echo "$BOLD_LETTERS 2. Install Freetube Media Player $NORMAL_LETTERS"
+    echo "$BOLD_LETTERS 3. Install Oracle Virtualbox $NORMAL_LETTERS"
+    echo "$BOLD_LETTERS 4. Install VariCAD for Linux $NORMAL_LETTERS"
+    echo "$BOLD_LETTERS 5. Install VariCAD Viewer for Linux $NORMAL_LETTERS"
+    echo "$BOLD_LETTERS 6. Install Remarkable Markdown Editor $NORMAL_LETTERS"
+    echo "$BOLD_LETTERS 7. Install Haroopad Markdown Editor $NORMAL_LETTERS"
+    echo "$BOLD_LETTERS 8. Install Plank Dock $NORMAL_LETTERS"
+    echo "$BOLD_LETTERS 9. Add NOPASSWD option for your sudo use $NORMAL_LETTERS"
     echo "$BOLD_LETTERS 0. Exit (default) $NORMAL_LETTERS"
     
     echo
-    read -p "$BOLD_LETTERS Enter your choice:  $NORMAL_LETTERS" extra_package
+    read -p "$BOLD_LETTERS Enter your choice:  $NORMAL_LETTERS" extra_action
     # Execute action
-    if [[ "$extra_package" == "1" ]]; then
+    if [[ "$extra_action" == "1" ]]; then
         install_stremio
-    elif [[ "$extra_package" == "2" ]]; then
+    elif [[ "$extra_action" == "2" ]]; then
         install_freetube
-    elif [[ "$extra_package" == "3" ]]; then
+    elif [[ "$extra_action" == "3" ]]; then
         install_oracle_virtualbox
-    elif [[ "$extra_package" == "4" ]]; then
-        install_VariCAD
-    elif [[ "$extra_package" == "5" ]]; then
+    elif [[ "$extra_action" == "4" ]]; then
+        install_varicad_for_linux
+    elif [[ "$extra_action" == "5" ]]; then
+        install_varicad_viewer
+    elif [[ "$extra_action" == "6" ]]; then
         install_remarkable_editor
-    elif [[ "$extra_package" == "6" ]]; then
+    elif [[ "$extra_action" == "7" ]]; then
         install_haroopad_editor
-    elif [[ "$extra_package" == "7" ]]; then
+    elif [[ "$extra_action" == "8" ]]; then
         install_plank_dock
-    elif [[ "$extra_package" == "8" ]]; then
+    elif [[ "$extra_action" == "9" ]]; then
         add_nopasswd_option
     else
         echo "$BOLD_LETTERS 
@@ -439,7 +461,7 @@ function choose_package() {
 function choose_again() {
     # Choose again after 
     clear
-    msg="$BOLD_LETTERS Do you want to install anything else? (Y/n):  $NORMAL_LETTERS"
+    msg="$BOLD_LETTERS Do you want to do anything else? (Y/n):  $NORMAL_LETTERS"
     echo
     read -p "$msg" answer
     if [[ "$answer" == "Y" ]] || [[ "$answer" == "y" ]]; then
@@ -459,7 +481,7 @@ function main() {
 	install_essential_packages
 	install_common_packages
     clear; echo "$BOLD_LETTERS
-    We can install some extra packages...
+    We can do some more things...
     $NORMAL_LETTERS"; echo
     choose_package
 }
