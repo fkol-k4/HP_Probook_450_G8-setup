@@ -26,6 +26,8 @@ NORMAL_LETTERS=$(tput sgr0)
 WORKING_DIR="/tmp/SetupDirectory"
 GIT_REPO="https://github.com/fkol-k4/HP_Probook_450_G8-setup.git"
 REPO_DIR=`echo "$GIT_REPO" | awk -F'[/.]' '{print $6}'`
+SYSTEMFILES_DIR="linux_mint_22.1_Victoria/SystemFiles/*"
+
 
 #   Create deb packages backup directory
 cd "$HOME"
@@ -60,7 +62,7 @@ function clone_setup_data(){
     $msgbody
 	$NORMAL_LETTERS"
     clear
-    cd "$WORKING_DIR"/
+    cd "$WORKING_DIR"
 	echo "$msg"; notify-send -t 4000 "$msgbody"; sleep 2
 	# Cloning installation data
     git clone "$GIT_REPO"
@@ -71,13 +73,12 @@ function clone_setup_data(){
 
 function copy_systemfiles(){
 	# Copying System Files from Git repo to System
-	filesdir="linux_mint_22.1_Victoria/SystemFiles"
 	msgbody="Copying System Files from Git repo to System, please wait..."
 	msg="$BOLD_LETTERS
 	$msgbody
 	$NORMAL_LETTERS"
 	echo "$msg"; notify-send -t 4000 "$msgbody"; sleep 2
-	sudo rsync -avz "$WORKING_DIR/$REPO_DIR/$filesdir/" /
+	sudo rsync -av $WORKING_DIR/$REPO_DIR/$SYSTEMFILES_DIR /
 	sync; sleep 1; sync
 	sudo update-grub
 	sudo fc-cache -fv
